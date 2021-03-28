@@ -1,6 +1,9 @@
+#include <opencv2/core/core.hpp>
+#include <opencv2/core/mat.hpp>
 #include <opencv2/opencv.hpp>
 #include <opencv2/calib3d.hpp>
-#include "include/opencv2/ccalib/omnidir.hpp"
+#include <opencv2/ccalib/omnidir.hpp>
+#include <opencv2/highgui.hpp>
 #include <vector>
 #include <string>
 #include <iostream>
@@ -14,7 +17,7 @@ int main(int argc, char** argv)
 	vector<Mat> imgs; //The images we work with
 	
 	Size boardSize(8,6);
-	double squareSize = 50.0d; //In milimeters, to be modified when we will use real images from the camera, for now we only use test images from https://github.com/jiuerbujie/omnidirectional_calibration
+	double squareSize = 50.0; //In milimeters, to be modified when we will use real images from the camera, for now we only use test images from https://github.com/jiuerbujie/omnidirectional_calibration
 	
 	
 	vector<Mat> imagePoints, objectPoints;
@@ -29,8 +32,8 @@ int main(int argc, char** argv)
 	/*vector<vector<Vec2f> > imagePoints;
 	vector<vector<Vec3f> > objectPoints;*/
 	
-	string virobImagesPathPrefix = "../Virob/calibrationImages/img"; //Where we take the images (these are from the Virob classes in robotics)
-	string gitHubImagesPathPrefix = "../GitHubData/omnidir_images/"; //From the omnidirectionnal camera calibration github 
+	string virobImagesPathPrefix = "./Virob/calibrationImages/img"; //Where we take the images (these are from the Virob classes in robotics)
+	string gitHubImagesPathPrefix = "./GitHubData/omnidir_images/"; //From the omnidirectionnal camera calibration github 
 		
 	for (int i = 0; i < 3; i++)
 	{
@@ -40,7 +43,8 @@ int main(int argc, char** argv)
 	
 	
 	//Filling imagePoints and objectPoints
-	for (int i = 0; i < 3; i++)	
+    // changement de 3-> 2 et cela ne buggue plus
+	for (int i = 0; i < 2; i++)
 	{
 		/*vector<Vec3f> tempObj;
 		vector<Vec2f> tempImg;*/
@@ -60,7 +64,7 @@ int main(int argc, char** argv)
 		{
 			for (int j = 0; j < 6; j++)
 			{
-				Vec3d point((double)k, (double)j, 0.0d); //Once again forcing the type (even if it is useless here), just making sure the error does not come from here
+				Vec3d point((double)k, (double)j, 0.0); //Once again forcing the type (even if it is useless here), just making sure the error does not come from here
 				point *= squareSize;
 				tempObj.at<Vec3d>(0,j*8+k) = point;
 			}
@@ -91,14 +95,37 @@ int main(int argc, char** argv)
 	cout << "OpenCV version : " << CV_MAJOR_VERSION << "." << CV_MINOR_VERSION << endl;
 	cout << "Image of size " << imgs[0].size() << endl;
 	
+
 	//Parametric martices of the camera 
 	Mat K, xi, D, idx;
 	TermCriteria criteria(TermCriteria::COUNT + TermCriteria::EPS, 200, 0.0001);
 	vector<Mat> rvecs, tvecs;
 	int flags = 0;
 	
+    InputArrayOfArrays op = objectPoints;
+    InputArrayOfArrays ip = imagePoints;
+    
+    cout<<"Types"<<endl;
+    cout<<op.type()<<" "<<CV_64FC3<<" "<<CV_64FC2<<" "<<endl;
+    cout<<ip.type()<<" "<<CV_64FC3<<" "<<CV_64FC2<<" "<<endl;
+    
+    // récupération et test du code de cv::omnidir::internal::initializeCalibration
+    // qui était avant l'assertion fausse pour vérifier les types.
+    int nbImg = ip.total();
+    cout<<nbImg<<" images"<<endl;
+    for(int i=0; i<nbImg;++i){
+        cv::Mat objPoints, imgPoints;
+        op.getMat(i).copyTo(objPoints);
+        ip.getMat(i).copyTo(imgPoints);
+        cout<<i<<endl;
+        cout<<objPoints.type()<<endl;
+        cout<<imgPoints.type()<<endl;
+    }
+    
+    
 	//It is this line that crashes the program.
-	double rms = cv::omnidir::calibrate(objectPoints, imagePoints, imgs[0].size(), K, xi, D, rvecs, tvecs, flags, criteria, idx);
+	//double rms = cv::omnidir::calibrate(objectPoints, imagePoints, imgs[0].size(), K, xi, D, rvecs, tvecs, flags, criteria, idx);
+    double rms = cv::omnidir::calibrate(op, ip, imgs[0].size(), K, xi, D, rvecs, tvecs, flags, criteria, idx);
 	cout << rms << endl;
 	
 	
