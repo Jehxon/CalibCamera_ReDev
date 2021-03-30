@@ -14,6 +14,8 @@ using namespace cv;
 
 int main(int argc, char** argv)
 {
+	int numberOfImages = 18; //The number of images to work with
+	
 	vector<Mat> imgs; //The images we work with
 	
 	Size boardSize(8,6);
@@ -29,25 +31,20 @@ int main(int argc, char** argv)
 	//The online documentation (https://docs.opencv.org/master/dd/d12/tutorial_omnidir_calib_main.html) specify we can use vectors of vectors or vectors of matrices.
 	//We tried both solutions, but nothing seems to work, we got the same error.
 	
-	/*vector<vector<Vec2f> > imagePoints;
-	vector<vector<Vec3f> > objectPoints;*/
 	
-	string virobImagesPathPrefix = "./Virob/calibrationImages/img"; //Where we take the images (these are from the Virob classes in robotics)
-	string gitHubImagesPathPrefix = "./GitHubData/omnidir_images/"; //From the omnidirectionnal camera calibration github 
-		
-	for (int i = 0; i < 3; i++)
+	string gitHubImagesPathPrefix = "../Images/omnidir_images/"; //From the omnidirectionnal camera calibration github 
+	
+	for (int i = 0; i < 18; i++)
 	{
 		imgs.push_back(imread(gitHubImagesPathPrefix + to_string(i+1) +".jpg", IMREAD_GRAYSCALE));//We fill the images vector
-		imshow("image " + to_string(i), imgs[i]); //Showing the images used 
+		//imshow("image " + to_string(i), imgs[i]); //Showing the images used 
 	}
 	
 	
 	//Filling imagePoints and objectPoints
-    // changement de 3-> 2 et cela ne buggue plus
-	for (int i = 0; i < 2; i++)
+	
+	for (int i = 0; i < numberOfImages; i++)
 	{
-		/*vector<Vec3f> tempObj;
-		vector<Vec2f> tempImg;*/
 		Mat tempImg;
 		Mat tempObj;
 		
@@ -57,22 +54,25 @@ int main(int argc, char** argv)
 		bool found = findChessboardCorners(imgs[i], boardSize, tempImg); //We noticed this function transforms the tempImg matrix in type CV_32FC2 instead of CV_64FC2
 		tempImg.convertTo(tempImg, CV_64FC2); //So once again we force the right type
 		
-		cout << "Chessboard " << i << " found ? : " << found << endl; // this line was used for trying to debug
+		cout << "Chessboard of image " << i+1 << " found ? : " << found << endl; // this line was used for trying to debug
 		
-		//Filling tempObj
-		for (int k = 0; k < 8; k++)
+		if(found)
 		{
-			for (int j = 0; j < 6; j++)
+			//Filling tempObj
+			for (int k = 0; k < 8; k++)
 			{
-				Vec3d point((double)k, (double)j, 0.0); //Once again forcing the type (even if it is useless here), just making sure the error does not come from here
-				point *= squareSize;
-				tempObj.at<Vec3d>(0,j*8+k) = point;
+				for (int j = 0; j < 6; j++)
+				{
+					Vec3d point((double)k, (double)j, 0.0); //Once again forcing the type (even if it is useless here), just making sure the error does not come from here
+					point *= squareSize;
+					tempObj.at<Vec3d>(0,j*8+k) = point;
+				}
 			}
+			
+			//Putting the constructed matrices in the vectors
+			imagePoints.push_back(tempImg);
+			objectPoints.push_back(tempObj);
 		}
-		
-		//Putting the constructed matrices in the vectors
-		imagePoints.push_back(tempImg);
-		objectPoints.push_back(tempObj);
 	}
 	
 	
@@ -90,9 +90,9 @@ int main(int argc, char** argv)
 	*/
 	
 	//Debuging outputs
-	cout << "objectPoints right type ? : " << (objectPoints[0].type() == CV_64FC3) << " imagePoints right type ? : " << (imagePoints[0].type() == CV_64FC2) << " objectPoints is empty ? : " << objectPoints[1].empty() << endl;
-	cout << "Number of images in obectPoints : " << objectPoints.size() << ", should be the same as in imagePoints : " << imagePoints.size() << endl;
+	//cout << "objectPoints right type ? : " << (objectPoints[0].type() == CV_64FC3) << " imagePoints right type ? : " << (imagePoints[0].type() == CV_64FC2) << " objectPoints is empty ? : " << objectPoints[1].empty() << endl;
 	cout << "OpenCV version : " << CV_MAJOR_VERSION << "." << CV_MINOR_VERSION << endl;
+	cout << "Number of images in obectPoints : " << objectPoints.size() << ", should be the same as in imagePoints : " << imagePoints.size() << endl;
 	cout << "Image of size " << imgs[0].size() << endl;
 	
 
@@ -102,39 +102,19 @@ int main(int argc, char** argv)
 	vector<Mat> rvecs, tvecs;
 	int flags = 0;
 	
-    InputArrayOfArrays op = objectPoints;
-    InputArrayOfArrays ip = imagePoints;
-    
-    cout<<"Types"<<endl;
-    cout<<op.type()<<" "<<CV_64FC3<<" "<<CV_64FC2<<" "<<endl;
-    cout<<ip.type()<<" "<<CV_64FC3<<" "<<CV_64FC2<<" "<<endl;
-    
-    // récupération et test du code de cv::omnidir::internal::initializeCalibration
-    // qui était avant l'assertion fausse pour vérifier les types.
-    int nbImg = ip.total();
-    cout<<nbImg<<" images"<<endl;
-    for(int i=0; i<nbImg;++i){
-        cv::Mat objPoints, imgPoints;
-        op.getMat(i).copyTo(objPoints);
-        ip.getMat(i).copyTo(imgPoints);
-        cout<<i<<endl;
-        cout<<objPoints.type()<<endl;
-        cout<<imgPoints.type()<<endl;
-    }
-    
     
 	//It is this line that crashes the program.
-	//double rms = cv::omnidir::calibrate(objectPoints, imagePoints, imgs[0].size(), K, xi, D, rvecs, tvecs, flags, criteria, idx);
-    double rms = cv::omnidir::calibrate(op, ip, imgs[0].size(), K, xi, D, rvecs, tvecs, flags, criteria, idx);
-	cout << rms << endl;
+	double rms = cv::omnidir::calibrate(objectPoints, imagePoints, imgs[0].size(), K, xi, D, rvecs, tvecs, flags, criteria, idx);
+	cout << "Done !\nOn trouve K =\n" << K << endl;
 	
 	
+	/* Uncomment if showing the images
 	//Waiting for the user to press "q" to quit.
 	int k = waitKey(0);
 	if(k == 'q')
 	{
 		destroyAllWindows();
-	}
+	}*/
 	
 	return 0;
 }

@@ -123,32 +123,32 @@ calibration/fast:
 	$(MAKE) -f CMakeFiles/calibration.dir/build.make CMakeFiles/calibration.dir/build
 .PHONY : calibration/fast
 
-calibrationCamera.o: calibrationCamera.cpp.o
+src/calibrationCamera.o: src/calibrationCamera.cpp.o
 
-.PHONY : calibrationCamera.o
+.PHONY : src/calibrationCamera.o
 
 # target to build an object file
-calibrationCamera.cpp.o:
-	$(MAKE) -f CMakeFiles/calibration.dir/build.make CMakeFiles/calibration.dir/calibrationCamera.cpp.o
-.PHONY : calibrationCamera.cpp.o
+src/calibrationCamera.cpp.o:
+	$(MAKE) -f CMakeFiles/calibration.dir/build.make CMakeFiles/calibration.dir/src/calibrationCamera.cpp.o
+.PHONY : src/calibrationCamera.cpp.o
 
-calibrationCamera.i: calibrationCamera.cpp.i
+src/calibrationCamera.i: src/calibrationCamera.cpp.i
 
-.PHONY : calibrationCamera.i
+.PHONY : src/calibrationCamera.i
 
 # target to preprocess a source file
-calibrationCamera.cpp.i:
-	$(MAKE) -f CMakeFiles/calibration.dir/build.make CMakeFiles/calibration.dir/calibrationCamera.cpp.i
-.PHONY : calibrationCamera.cpp.i
+src/calibrationCamera.cpp.i:
+	$(MAKE) -f CMakeFiles/calibration.dir/build.make CMakeFiles/calibration.dir/src/calibrationCamera.cpp.i
+.PHONY : src/calibrationCamera.cpp.i
 
-calibrationCamera.s: calibrationCamera.cpp.s
+src/calibrationCamera.s: src/calibrationCamera.cpp.s
 
-.PHONY : calibrationCamera.s
+.PHONY : src/calibrationCamera.s
 
 # target to generate assembly for a file
-calibrationCamera.cpp.s:
-	$(MAKE) -f CMakeFiles/calibration.dir/build.make CMakeFiles/calibration.dir/calibrationCamera.cpp.s
-.PHONY : calibrationCamera.cpp.s
+src/calibrationCamera.cpp.s:
+	$(MAKE) -f CMakeFiles/calibration.dir/build.make CMakeFiles/calibration.dir/src/calibrationCamera.cpp.s
+.PHONY : src/calibrationCamera.cpp.s
 
 # Help Target
 help:
@@ -159,9 +159,9 @@ help:
 	@echo "... rebuild_cache"
 	@echo "... edit_cache"
 	@echo "... calibration"
-	@echo "... calibrationCamera.o"
-	@echo "... calibrationCamera.i"
-	@echo "... calibrationCamera.s"
+	@echo "... src/calibrationCamera.o"
+	@echo "... src/calibrationCamera.i"
+	@echo "... src/calibrationCamera.s"
 .PHONY : help
 
 

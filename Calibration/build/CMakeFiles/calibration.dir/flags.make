@@ -6,5 +6,5 @@ CXX_FLAGS =
 
 CXX_DEFINES = 
 
-CXX_INCLUDES = -I/home/ecn/Documents/REDEV/CalibCamera_ReDev/Calibration/include/omnidir.hpp -isystem /usr/include/opencv4 
+CXX_INCLUDES = -isystem /usr/include/opencv4 
 

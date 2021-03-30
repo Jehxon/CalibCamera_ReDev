@@ -57,27 +57,27 @@ include CMakeFiles/calibration.dir/progress.make
 # Include the compile flags for this target's objects.
 include CMakeFiles/calibration.dir/flags.make
 
-CMakeFiles/calibration.dir/calibrationCamera.cpp.o: CMakeFiles/calibration.dir/flags.make
-CMakeFiles/calibration.dir/calibrationCamera.cpp.o: ../calibrationCamera.cpp
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/ecn/Documents/REDEV/CalibCamera_ReDev/Calibration/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_1) "Building CXX object CMakeFiles/calibration.dir/calibrationCamera.cpp.o"
-	/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/calibration.dir/calibrationCamera.cpp.o -c /home/ecn/Documents/REDEV/CalibCamera_ReDev/Calibration/calibrationCamera.cpp
+CMakeFiles/calibration.dir/src/calibrationCamera.cpp.o: CMakeFiles/calibration.dir/flags.make
+CMakeFiles/calibration.dir/src/calibrationCamera.cpp.o: ../src/calibrationCamera.cpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/ecn/Documents/REDEV/CalibCamera_ReDev/Calibration/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_1) "Building CXX object CMakeFiles/calibration.dir/src/calibrationCamera.cpp.o"
+	/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/calibration.dir/src/calibrationCamera.cpp.o -c /home/ecn/Documents/REDEV/CalibCamera_ReDev/Calibration/src/calibrationCamera.cpp
 
-CMakeFiles/calibration.dir/calibrationCamera.cpp.i: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/calibration.dir/calibrationCamera.cpp.i"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/ecn/Documents/REDEV/CalibCamera_ReDev/Calibration/calibrationCamera.cpp > CMakeFiles/calibration.dir/calibrationCamera.cpp.i
+CMakeFiles/calibration.dir/src/calibrationCamera.cpp.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/calibration.dir/src/calibrationCamera.cpp.i"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/ecn/Documents/REDEV/CalibCamera_ReDev/Calibration/src/calibrationCamera.cpp > CMakeFiles/calibration.dir/src/calibrationCamera.cpp.i
 
-CMakeFiles/calibration.dir/calibrationCamera.cpp.s: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/calibration.dir/calibrationCamera.cpp.s"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/ecn/Documents/REDEV/CalibCamera_ReDev/Calibration/calibrationCamera.cpp -o CMakeFiles/calibration.dir/calibrationCamera.cpp.s
+CMakeFiles/calibration.dir/src/calibrationCamera.cpp.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/calibration.dir/src/calibrationCamera.cpp.s"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/ecn/Documents/REDEV/CalibCamera_ReDev/Calibration/src/calibrationCamera.cpp -o CMakeFiles/calibration.dir/src/calibrationCamera.cpp.s
 
 # Object files for target calibration
 calibration_OBJECTS = \
-"CMakeFiles/calibration.dir/calibrationCamera.cpp.o"
+"CMakeFiles/calibration.dir/src/calibrationCamera.cpp.o"
 
 # External object files for target calibration
 calibration_EXTERNAL_OBJECTS =
 
-calibration: CMakeFiles/calibration.dir/calibrationCamera.cpp.o
+calibration: CMakeFiles/calibration.dir/src/calibrationCamera.cpp.o
 calibration: CMakeFiles/calibration.dir/build.make
 calibration: /usr/lib/x86_64-linux-gnu/libopencv_stitching.so.4.2.0
 calibration: /usr/lib/x86_64-linux-gnu/libopencv_aruco.so.4.2.0
